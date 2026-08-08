@@ -63,10 +63,20 @@ export default function Curtain() {
         >
           <div className={s.inner}>
             <motion.svg viewBox="0 0 200 110" className={s.mono} initial="hidden" animate="shown">
+              {/* Defined inside this same SVG rather than in a shared defs
+                  block elsewhere in the document — an internal reference is
+                  resolved with the element, so there's nothing to race. */}
+              <defs>
+                <linearGradient id="curtainInk" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stopColor="#17263c" />
+                  <stop offset="55%" stopColor="#2e4260" />
+                  <stop offset="100%" stopColor="#b99458" />
+                </linearGradient>
+              </defs>
               <motion.path
                 d="M18,70 C40,38 66,34 80,56 C92,74 74,94 60,84 C46,74 58,48 84,42 C110,36 126,52 132,64"
                 fill="none"
-                stroke="url(#inkGold)"
+                stroke="url(#curtainInk)"
                 strokeWidth="1.2"
                 strokeLinecap="round"
                 pathLength={1}
@@ -76,7 +86,7 @@ export default function Curtain() {
               <motion.path
                 d="M132,64 C140,48 158,40 172,48 C186,56 184,78 168,82 C154,86 142,76 140,64"
                 fill="none"
-                stroke="url(#inkGold)"
+                stroke="url(#curtainInk)"
                 strokeWidth="1.2"
                 strokeLinecap="round"
                 pathLength={1}

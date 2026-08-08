@@ -10,7 +10,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "shapes": "node scripts/generate-shapes.mjs > lib/shapes.ts",
+    "shapes": "node scripts/generate-shapes.mjs > components/masks.module.css",
     "placeholders": "node scripts/generate-placeholders.mjs"
   },
   "dependencies": {

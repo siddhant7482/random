@@ -1,4 +1,3 @@
-import SvgDefs from "@/components/SvgDefs";
 import Curtain from "@/components/Curtain";
 import Petals from "@/components/Petals";
 import Nav from "@/components/Nav";
@@ -13,7 +12,6 @@ import Footer from "@/components/Footer";
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <SvgDefs />
       <Curtain />
       <Petals />
       <Nav />

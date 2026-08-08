@@ -50,13 +50,48 @@ const shapes = {
   tileBlob:  blob({ seed: 3311,     points: 200, rx: 0.498, ry: 0.498, lobeAmt: 0.028, tearAmt: 0.008, nLobes: 6 }),
 };
 
-// Header is deliberately ASCII-only: this is piped through the shell's stdout
-// redirect, and a stray em-dash comes out mangled on some Windows consoles.
-let out = "// AUTO-GENERATED - do not edit by hand.\n";
-out += "// Torn watercolour edges as SVG paths in objectBoundingBox units (0..1).\n";
-out += "// Regenerate with:  npm run shapes\n";
-out += "// Change the `seed` numbers in scripts/generate-shapes.mjs for a new set.\n\n";
-for (const [k, v] of Object.entries(shapes)) {
-  out += `export const ${k} =\n  "${v}";\n\n`;
+/* Emitted as CSS mask images rather than SVG <clipPath> elements.
+ *
+ * `clip-path: url(#id)` points at a separate SVG somewhere else in the
+ * document. If that reference isn't resolved when the element is painted, the
+ * browser applies no clip at all and you get a bare rectangle — which is
+ * exactly the flash of a square photo this replaced. A mask carries its own
+ * geometry, so there is nothing to resolve and nothing to race.
+ *
+ * viewBox 0 0 1 1 with preserveAspectRatio='none' reproduces what
+ * clipPathUnits="objectBoundingBox" did: the shape stretches to whatever size
+ * the element happens to be.
+ */
+function maskUrl(path) {
+  const svg =
+    `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1' preserveAspectRatio='none'>` +
+    `<path d='${path}' fill='%23fff'/></svg>`;
+  // only the characters that are unsafe unencoded inside a CSS url()
+  return svg.replace(/</g, "%3C").replace(/>/g, "%3E").replace(/"/g, "%22");
 }
+
+// ASCII-only header: this goes through a shell stdout redirect, and a stray
+// em-dash comes out mangled on some Windows consoles.
+let out = "/* AUTO-GENERATED - do not edit by hand.\n";
+out += "   Torn watercolour edges, as CSS masks.\n";
+out += "   Regenerate with:  npm run shapes\n";
+out += "   Change the `seed` numbers in scripts/generate-shapes.mjs for a new set. */\n\n";
+
+for (const [name, path] of Object.entries(shapes)) {
+  out += `.${name} {\n`;
+  out += `  -webkit-mask-image: url("data:image/svg+xml,${maskUrl(path)}");\n`;
+  out += `          mask-image: url("data:image/svg+xml,${maskUrl(path)}");\n`;
+  out += `}\n\n`;
+}
+
+out += `/* shared by every shape above */\n`;
+out += `.masked {\n`;
+out += `  -webkit-mask-size: 100% 100%;\n`;
+out += `          mask-size: 100% 100%;\n`;
+out += `  -webkit-mask-repeat: no-repeat;\n`;
+out += `          mask-repeat: no-repeat;\n`;
+out += `  -webkit-mask-position: center;\n`;
+out += `          mask-position: center;\n`;
+out += `}\n`;
+
 process.stdout.write(out);

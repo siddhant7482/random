@@ -15,10 +15,10 @@
      narrow phone screen. */
   inset: -8% -9% -7% -8%;
   z-index: -1;
-  clip-path: url(#clipWash);
-  /* overflow:hidden as well as the clip-path. clip-path only affects painting;
-     it does not stop a transformed child from growing the page's scrollable
-     area, and the blooms below are transformed. This is what contains them. */
+  /* Torn silhouette comes from a mask class applied in the component.
+     overflow:hidden is separate and load-bearing: masking only affects
+     painting, it does not stop a transformed child from growing the page's
+     scrollable area, and the blooms below are transformed. */
   overflow: hidden;
   /* a faint ground so there's colour even with animation suppressed */
   background: radial-gradient(70% 70% at 50% 50%, rgba(216, 188, 142, 0.18), transparent 78%);

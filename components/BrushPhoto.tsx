@@ -3,14 +3,19 @@
 import { useState } from "react";
 import Image from "next/image";
 import s from "./BrushPhoto.module.css";
+import m from "./masks.module.css";
 
 type Variant = "hero" | "soft" | "softB" | "tile";
 
-const CLIP: Record<Variant, string> = {
-  hero: "url(#clipHero)",
-  soft: "url(#clipSoft)",
-  softB: "url(#clipSoftB)",
-  tile: "url(#clipTile)",
+/* Each variant is a self-contained CSS mask (see scripts/generate-shapes.mjs).
+   These used to be `clip-path: url(#id)` pointing at a shared SVG, which the
+   browser silently ignores if the reference isn't resolved at paint time —
+   leaving the photo as a plain square until something forced a repaint. */
+const SHAPE: Record<Variant, string> = {
+  hero: m.heroBlob,
+  soft: m.softBlob,
+  softB: m.softBlobB,
+  tile: m.tileBlob,
 };
 
 type Props = {
@@ -57,14 +62,14 @@ export default function BrushPhoto({
       {/* The wash is a fixed torn silhouette; the colour inside it drifts.
           Three blooms on unrelated timings so they never fall into step. */}
       {wash && (
-        <div className={s.wash} aria-hidden="true">
+        <div className={`${s.wash} ${m.heroWash} ${m.masked}`} aria-hidden="true">
           <span className={`${s.bloom} ${s.bloomBlush}`} />
           <span className={`${s.bloom} ${s.bloomSage}`} />
           <span className={`${s.bloom} ${s.bloomGold}`} />
         </div>
       )}
 
-      <div className={s.clip} style={{ clipPath: CLIP[variant] }}>
+      <div className={`${s.clip} ${SHAPE[variant]} ${m.masked}`}>
         {failed ? (
           <Placeholder src={src} />
         ) : (
