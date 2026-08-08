@@ -33,7 +33,7 @@ export const wedding = {
      `focus` is CSS object-position. The photo is cropped to fill the torn
      shape, so nudge this if faces drift out of frame. */
   hero: {
-    eyebrow: "Save our date",
+    eyebrow: "Save the date",
     accent: "we can't wait to celebrate with you",
     photo: "/images/hero.jpg",
     photoAlt: "Ayushi and Romil on the beach at sunset",
