@@ -43,7 +43,10 @@ export const metadata: Metadata = {
     type: "website",
     images: [{ url: wedding.hero.photo }],
   },
-  icons: { icon: "/favicon.ico" },
+  /* No `icons` entry on purpose. Next picks up app/favicon.ico, app/icon.png
+     and app/apple-icon.png by file convention and emits the right tags with
+     cache-busting hashes; naming them here would override that with plain,
+     unhashed paths. Regenerate them with `npm run icons`. */
 };
 
 export const viewport: Viewport = {
