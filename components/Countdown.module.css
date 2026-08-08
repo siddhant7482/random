@@ -1,0 +1,113 @@
+.wrap {
+  position: relative;
+  z-index: 1;
+  padding: clamp(3rem, 8vw, 5.5rem) var(--gutter) clamp(2rem, 6vw, 4rem);
+  text-align: center;
+}
+
+.divider {
+  width: min(100%, 20rem);
+  margin: 0 auto clamp(2rem, 5vw, 3.25rem);
+  color: var(--sage);
+}
+
+.grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(0.5rem, 3vw, 2.5rem);
+  width: min(100%, 44rem);
+  margin-inline: auto;
+}
+
+/* Pool of warm light under the clock.
+   Two rules here are load-bearing, not stylistic:
+
+   1. No negative inset on the horizontal axis. At -8% this stuck ~8px past
+      each side of a 390px phone, which widened the document.
+   2. The breathing is opacity-only. It used to scale, and a transform grows
+      the element's scrollable overflow — so the page width pulsed on a 9s
+      cycle, the mobile layout viewport grew and shrank to match, and the
+      fixed header (left:0/right:0) resized with it. The visible result was
+      the hamburger sliding back and forth on its own.
+
+   Vertical bleed is fine — the page scrolls that way anyway. The blur is
+   also fine: filter ink never contributes to scrollable overflow. */
+.grid::before {
+  content: "";
+  position: absolute;
+  inset: -30% 0;
+  z-index: -1;
+  background: radial-gradient(60% 50% at 50% 50%, rgba(216, 188, 142, 0.34), transparent 72%);
+  filter: blur(24px);
+  animation: pool 9s var(--ease-soft) infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes pool {
+  from {
+    opacity: 0.45;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  position: relative;
+}
+
+/* hairline rules between the cells, but not after the last */
+.cell:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 12%;
+  right: calc(clamp(0.5rem, 3vw, 2.5rem) / -2);
+  width: 1px;
+  height: 46%;
+  background: var(--line);
+}
+
+.number {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: clamp(2.25rem, 8vw, 4rem);
+  line-height: 1.15;
+  /* tabular figures stop the layout twitching as the seconds roll */
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+  color: var(--ink);
+  min-width: 2ch;
+  text-shadow: 0 0 26px rgba(216, 188, 142, 0.45);
+}
+
+.numberInner {
+  display: block;
+}
+
+.label {
+  color: var(--gold);
+  font-size: clamp(0.58rem, 1.9vw, 0.75rem);
+  letter-spacing: 0.28em;
+  text-indent: 0.28em;
+}
+
+/* ---------- after the day ---------- */
+
+.after {
+  width: min(100%, 34rem);
+  margin-inline: auto;
+}
+
+.afterText {
+  margin-top: 0.5rem;
+  color: var(--ink-2);
+  font-style: italic;
+}

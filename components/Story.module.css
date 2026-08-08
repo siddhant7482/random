@@ -1,0 +1,74 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(3.5rem, 9vw, 7rem);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(1.75rem, 5vw, 4.5rem);
+}
+
+/* every other entry mirrors, so the eye zig-zags down the page */
+.flip .photo {
+  order: 2;
+}
+
+.photo {
+  width: 100%;
+  max-width: 24rem;
+  justify-self: center;
+}
+
+.text {
+  max-width: 34rem;
+}
+
+.year {
+  color: var(--gold);
+  margin-bottom: 0.6rem;
+}
+
+.title {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(1.6rem, 3.2vw, 2.35rem);
+  line-height: 1.25;
+  letter-spacing: 0.005em;
+  margin-bottom: 0.7rem;
+}
+
+.body {
+  color: var(--ink-2);
+}
+
+.sprig {
+  width: clamp(34px, 6vw, 52px);
+  margin: clamp(3rem, 7vw, 5rem) auto 0;
+  color: var(--sage);
+  opacity: 0.8;
+}
+
+@media (max-width: 820px) {
+  .row,
+  .flip {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.75rem;
+    text-align: center;
+  }
+
+  /* on one column the mirror would just look like an accident */
+  .flip .photo {
+    order: 0;
+  }
+
+  .photo {
+    max-width: min(76vw, 20rem);
+  }
+
+  .text {
+    margin-inline: auto;
+  }
+}

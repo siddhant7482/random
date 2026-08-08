@@ -1,0 +1,190 @@
+.hero {
+  position: relative;
+  z-index: 1;
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  padding: clamp(5.5rem, 12vh, 8rem) var(--gutter) clamp(4rem, 10vh, 6rem);
+  overflow: hidden;
+}
+
+/* The thin inset rule from the printed card.
+   Its top edge is pushed clear of the fixed nav — at the even inset it ran
+   straight through the menu links, which read as a stray rule across them. */
+.frame {
+  position: absolute;
+  inset: clamp(0.75rem, 2.2vw, 1.75rem);
+  top: calc(clamp(5rem, 9vh, 6rem) + env(safe-area-inset-top));
+  border: 1px solid var(--line);
+  pointer-events: none;
+}
+
+/* ---------- corner florals ---------- */
+
+.corner {
+  position: absolute;
+  width: clamp(110px, 22vw, 240px);
+  color: var(--sage);
+  opacity: 0.75;
+  pointer-events: none;
+}
+
+/* also held below the nav, so it sits just inside the frame's top corner
+   instead of tangling with the menu links */
+.cornerTl {
+  top: calc(clamp(5.75rem, 10vh, 7rem) + env(safe-area-inset-top));
+  left: clamp(1.5rem, 4vw, 3rem);
+}
+
+.cornerBr {
+  bottom: clamp(1.5rem, 4vw, 3rem);
+  right: clamp(1.5rem, 4vw, 3rem);
+}
+
+/* ---------- content ---------- */
+
+.inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: min(100%, 44rem);
+}
+
+.eyebrow {
+  margin-bottom: clamp(1.5rem, 4vh, 2.75rem);
+  color: var(--ink);
+}
+
+.photo {
+  position: relative;
+  width: min(78vw, 26rem);
+  margin-bottom: clamp(1.25rem, 3vh, 2rem);
+}
+
+/* Light bloom behind the torn portrait. Sits inside the photo's own stacking
+   context (the parallax transform creates one), so z-index -1 keeps it under
+   the picture without falling behind the page. */
+.photo::before {
+  content: "";
+  position: absolute;
+  inset: -16%;
+  z-index: -1;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 50% 45%,
+    rgba(238, 214, 172, 0.55),
+    rgba(239, 220, 214, 0.3) 46%,
+    transparent 72%
+  );
+  filter: blur(26px);
+  animation: halo 8s var(--ease-soft) infinite alternate;
+  pointer-events: none;
+}
+
+/* Opacity-only, like the countdown's pool — a scaling decorative glow grows
+   the page's scrollable overflow. `.hero` happens to clip this one, but
+   there's no reason to leave the same trap set twice. */
+@keyframes halo {
+  from {
+    opacity: 0.55;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+
+/* ---------- names ---------- */
+
+/* Always one line — "Ayushi & Romil" breaking after the ampersand looked like
+   two separate people. Sizing is in vw so the line scales with the viewport
+   rather than wrapping; see the phone override below for the tight cases. */
+.names {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  gap: 0 clamp(0.4rem, 1.6vw, 1.25rem);
+  font-family: var(--script);
+  font-weight: 400;
+  font-size: clamp(2.9rem, 11vw, 6rem);
+  line-height: 1.02;
+  margin-bottom: clamp(1rem, 2.5vh, 1.75rem);
+  /* script faces sit low; nudge the optical baseline */
+  padding-bottom: 0.08em;
+}
+
+.amp {
+  font-family: var(--script);
+  font-size: 0.78em;
+  color: var(--gold);
+  padding-inline: 0.1em;
+}
+
+.meta {
+  color: var(--ink);
+  margin-bottom: 0.15rem;
+}
+
+.accent {
+  margin-top: clamp(0.75rem, 2vh, 1.5rem);
+  margin-bottom: clamp(1.75rem, 4vh, 2.75rem);
+}
+
+/* ---------- scroll cue ---------- */
+
+.scrollHint {
+  position: absolute;
+  bottom: clamp(1.25rem, 4vh, 2.5rem);
+  left: 50%;
+  translate: -50% 0;
+  z-index: 2;
+  width: 1px;
+  height: clamp(38px, 7vh, 62px);
+  overflow: hidden;
+  background: var(--line-strong);
+}
+
+/* a gold pip that keeps falling down the hairline */
+.scrollLine {
+  display: block;
+  width: 100%;
+  height: 45%;
+  background: var(--gold);
+  animation: drop 2.6s var(--ease-soft) infinite;
+}
+
+@keyframes drop {
+  0% {
+    transform: translateY(-100%);
+  }
+  60%,
+  100% {
+    transform: translateY(240%);
+  }
+}
+
+/* ---------- phones ---------- */
+
+@media (max-width: 640px) {
+  .corner {
+    opacity: 0.5;
+  }
+
+  /* 11.5vw keeps "Ayushi & Romil" on one line down to a 320px screen with room
+     to spare. If you swap in noticeably longer names, drop this number. */
+  .names {
+    font-size: 11.5vw;
+    gap: 0 0.35rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .cornerBr {
+    display: none;
+  }
+}

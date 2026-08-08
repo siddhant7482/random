@@ -1,0 +1,336 @@
+/* ============================================================
+   Scattered prints — a page from a scrapbook rather than a grid
+   ============================================================ */
+
+/* A 12-column field the pieces are pinned into by hand. Auto-flow left a
+   dead column beside the narrower prints and ran the section to nearly
+   2000px; placing each slot explicitly keeps it to two rows. */
+.collage {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: clamp(1rem, 2.5vw, 2rem);
+  align-items: start;
+}
+
+.slotA {
+  grid-column: 1 / 5;
+  grid-row: 1;
+}
+
+.slotNoteA {
+  grid-column: 5 / 9;
+  grid-row: 1;
+  align-self: center;
+}
+
+.slotB {
+  grid-column: 9 / 13;
+  grid-row: 1;
+  margin-top: clamp(1rem, 3vw, 2.5rem);
+}
+
+.slotC {
+  grid-column: 1 / 7;
+  grid-row: 2;
+}
+
+.slotD {
+  grid-column: 7 / 10;
+  grid-row: 2;
+  margin-top: clamp(1.5rem, 4vw, 3rem);
+}
+
+.slotSide {
+  grid-column: 10 / 13;
+  grid-row: 2;
+  align-self: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.5rem, 1.5vw, 1.25rem);
+}
+
+/* ---------- one print ---------- */
+
+.print {
+  margin: 0;
+  min-width: 0;
+}
+
+/* The tilt lives here, not on the .print wrapper: that wrapper is the scroll
+   reveal, and its transform is driven by JS — anything set here would be
+   overwritten the moment the element animates in. */
+.printBtn {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: #fff;
+  /* the deep lower margin is what makes it read as a print, not a photo */
+  padding: 0.6rem 0.6rem 0;
+  cursor: zoom-in;
+  transform: rotate(var(--tilt, 0deg));
+  box-shadow:
+    0 1px 2px rgba(23, 38, 60, 0.16),
+    0 14px 34px -20px rgba(23, 38, 60, 0.5);
+  transition: transform 0.55s var(--ease), box-shadow 0.55s var(--ease);
+}
+
+.printBtn:disabled {
+  cursor: default;
+}
+
+/* straighten and lift, like picking one up off the table */
+@media (hover: hover) {
+  .printBtn:hover,
+  .printBtn:focus-visible {
+    transform: rotate(0deg) translateY(-6px) scale(1.02);
+    box-shadow:
+      0 2px 4px rgba(23, 38, 60, 0.18),
+      0 26px 50px -24px rgba(23, 38, 60, 0.55);
+  }
+}
+
+.window {
+  position: relative;
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  background: var(--paper-3);
+}
+
+.square .window {
+  aspect-ratio: 1;
+}
+
+.tall .window {
+  aspect-ratio: 4 / 5;
+}
+
+.wide .window {
+  aspect-ratio: 16 / 10;
+}
+
+.img {
+  object-fit: cover;
+  filter: saturate(0.95);
+  transition: filter 0.6s var(--ease);
+}
+
+@media (hover: hover) {
+  .printBtn:hover .img {
+    filter: saturate(1.02);
+  }
+}
+
+.missing {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  font-family: var(--sans);
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--ink-3);
+  background: linear-gradient(150deg, #f2ede6, #e9e4dc 60%, #eceee6);
+  word-break: break-word;
+}
+
+/* the handwritten line in the white band */
+.caption {
+  display: block;
+  padding: 0.55rem 0.4rem 0.7rem;
+  font-family: var(--script);
+  font-size: clamp(1.05rem, 2.1vw, 1.35rem);
+  line-height: 1.2;
+  text-align: center;
+  color: var(--ink-2);
+}
+
+/* ---------- marginalia ---------- */
+
+.note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+}
+
+.noteText {
+  font-family: var(--script);
+  font-size: clamp(1.3rem, 2.6vw, 1.95rem);
+  line-height: 1.35;
+  text-align: center;
+  color: var(--gold);
+  /* the config strings carry their own line breaks */
+  white-space: pre-line;
+  /* tilt lives on the text, not the Reveal wrapper whose transform is animated */
+  transform: rotate(-4deg);
+}
+
+.noteB {
+  transform: rotate(3deg);
+}
+
+/* the little printed date down the side */
+.stamp {
+  writing-mode: vertical-rl;
+  flex: 0 0 auto;
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: clamp(0.66rem, 1.2vw, 0.8rem);
+  letter-spacing: 0.42em;
+  text-indent: 0.42em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+/* ---------- three rows once two get cramped ---------- */
+
+@media (max-width: 900px) {
+  .slotA {
+    grid-column: 1 / 7;
+  }
+  .slotNoteA {
+    grid-column: 7 / 13;
+  }
+  .slotB {
+    grid-column: 1 / 6;
+    grid-row: 2;
+  }
+  .slotC {
+    grid-column: 6 / 13;
+    grid-row: 2;
+    margin-top: clamp(1.5rem, 5vw, 3rem);
+  }
+  .slotD {
+    grid-column: 1 / 6;
+    grid-row: 3;
+    margin-top: 0;
+  }
+  .slotSide {
+    grid-column: 6 / 13;
+    grid-row: 3;
+  }
+}
+
+/* ---------- phones: a cascade, so each print stays big enough to read ----------
+   Cuts in at 560 rather than 620: at 620 the cascade's near-full-width prints
+   stacked up to a 2230px section, taller than either neighbouring layout. */
+
+@media (max-width: 560px) {
+  .collage {
+    gap: clamp(0.75rem, 3vw, 1.25rem);
+  }
+
+  .slotA {
+    grid-column: 1 / 9;
+    grid-row: 1;
+  }
+  .slotNoteA {
+    grid-column: 9 / 13;
+    grid-row: 1;
+  }
+  .slotB {
+    grid-column: 5 / 13;
+    grid-row: 2;
+    margin-top: clamp(1rem, 4vw, 1.75rem);
+  }
+  .slotC {
+    grid-column: 1 / 11;
+    grid-row: 3;
+    margin-top: clamp(1rem, 4vw, 1.75rem);
+  }
+  .slotD {
+    grid-column: 4 / 12;
+    grid-row: 4;
+    margin-top: clamp(1rem, 4vw, 1.75rem);
+  }
+  .slotSide {
+    grid-column: 1 / 13;
+    grid-row: 5;
+    margin-top: clamp(1rem, 4vw, 1.75rem);
+  }
+
+  .noteText {
+    font-size: clamp(1.15rem, 5vw, 1.5rem);
+  }
+}
+
+/* ============================================================
+   LIGHTBOX
+   ============================================================ */
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: clamp(0.25rem, 2vw, 1.5rem);
+  padding: clamp(3.5rem, 8vh, 5rem) clamp(0.5rem, 3vw, 2.5rem);
+  background: rgba(18, 26, 38, 0.94);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-height: 82vh;
+}
+
+.lightboxImg {
+  object-fit: contain;
+}
+
+.close,
+.arrow {
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(251, 249, 246, 0.25);
+  background: transparent;
+  color: var(--paper);
+  cursor: pointer;
+  transition: background-color 0.35s var(--ease), border-color 0.35s var(--ease);
+}
+
+.close:hover,
+.arrow:hover,
+.close:focus-visible,
+.arrow:focus-visible {
+  background: rgba(251, 249, 246, 0.14);
+  border-color: rgba(251, 249, 246, 0.5);
+}
+
+.close {
+  position: absolute;
+  top: clamp(0.75rem, 3vh, 1.75rem);
+  right: clamp(0.75rem, 3vw, 1.75rem);
+  width: 44px;
+  height: 44px;
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
+.arrow {
+  width: clamp(38px, 8vw, 52px);
+  height: clamp(38px, 8vw, 52px);
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  line-height: 1;
+  /* the glyph sits low in the box */
+  padding-bottom: 0.18em;
+}
+
+.counter {
+  position: absolute;
+  bottom: clamp(1rem, 3vh, 2rem);
+  left: 50%;
+  translate: -50% 0;
+  color: rgba(251, 249, 246, 0.7);
+}

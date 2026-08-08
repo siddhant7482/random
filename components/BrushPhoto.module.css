@@ -1,0 +1,135 @@
+.wrap {
+  position: relative;
+  width: 100%;
+  margin: 0;
+  isolation: isolate;
+}
+
+/* Watercolour bleed: same family of torn shape, nudged and rotated so its
+   edge never traces the photo's edge. That mismatch is what sells it. */
+.wash {
+  position: absolute;
+  /* A little wider than the photo so there's a band of colour to actually see.
+     Capped here on purpose: the -4deg rotation below grows the box by about
+     7% of its width, and at roughly -10% the wash would start reaching past a
+     narrow phone screen. */
+  inset: -8% -9% -7% -8%;
+  z-index: -1;
+  clip-path: url(#clipWash);
+  /* overflow:hidden as well as the clip-path. clip-path only affects painting;
+     it does not stop a transformed child from growing the page's scrollable
+     area, and the blooms below are transformed. This is what contains them. */
+  overflow: hidden;
+  /* a faint ground so there's colour even with animation suppressed */
+  background: radial-gradient(70% 70% at 50% 50%, rgba(216, 188, 142, 0.18), transparent 78%);
+  opacity: 0.9;
+  filter: blur(3px);
+  transform: rotate(-4deg);
+}
+
+/* ---------- drifting colour ---------- */
+
+.bloom {
+  position: absolute;
+  /* Oversized and clipped so no edge wanders into view, but only just — at
+     -30% the dense centres spent most of their time hidden behind the photo
+     and all you saw was the pale outskirts. */
+  inset: -18%;
+  border-radius: 50%;
+  /* radial gradients are already soft — no per-bloom blur needed, which keeps
+     the parent's filter from re-rendering a stack of blurred layers */
+}
+
+.bloomBlush {
+  background: radial-gradient(closest-side, rgba(233, 193, 182, 0.95), transparent 80%);
+  animation: driftBlush 27s ease-in-out infinite alternate;
+}
+
+.bloomSage {
+  background: radial-gradient(closest-side, rgba(141, 160, 128, 0.72), transparent 82%);
+  animation: driftSage 34s ease-in-out infinite alternate;
+}
+
+.bloomGold {
+  background: radial-gradient(closest-side, rgba(214, 176, 116, 0.72), transparent 82%);
+  animation: driftGold 41s ease-in-out infinite alternate;
+}
+
+/* Transform and opacity only — nothing here can affect layout. The three
+   periods are deliberately co-prime-ish so the pattern doesn't visibly loop. */
+@keyframes driftBlush {
+  from {
+    transform: translate3d(-14%, -10%, 0) scale(0.92);
+    opacity: 0.75;
+  }
+  to {
+    transform: translate3d(10%, 8%, 0) scale(1.16);
+    opacity: 1;
+  }
+}
+
+@keyframes driftSage {
+  from {
+    transform: translate3d(12%, 10%, 0) scale(1.12);
+    opacity: 0.95;
+  }
+  to {
+    transform: translate3d(-10%, -6%, 0) scale(0.9);
+    opacity: 0.6;
+  }
+}
+
+@keyframes driftGold {
+  from {
+    transform: translate3d(6%, -12%, 0) scale(1.05);
+    opacity: 0.7;
+  }
+  to {
+    transform: translate3d(-8%, 12%, 0) scale(1.22);
+    opacity: 1;
+  }
+}
+
+.clip {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  /* the clip-path itself is set inline, per variant */
+}
+
+.img {
+  object-fit: cover;
+  /* a whisper of warmth so photos sit with the ivory paper */
+  filter: saturate(0.96) contrast(1.02);
+}
+
+/* ---------- missing-photo state ---------- */
+
+.placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  background: linear-gradient(150deg, #f2ede6, #e9e4dc 55%, #eceee6);
+  color: var(--sage);
+  text-align: center;
+  padding: 8%;
+}
+
+.placeholderArt {
+  width: clamp(48px, 22%, 96px);
+  height: auto;
+  opacity: 0.75;
+}
+
+.placeholderText {
+  font-family: var(--sans);
+  font-size: clamp(0.62rem, 1.6vw, 0.74rem);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  word-break: break-word;
+}

@@ -1,0 +1,8 @@
+.petals {
+  position: fixed;
+  inset: 0;
+  /* above the paper texture (z 0), below every content section (z 1)
+     and well below the nav (z 100) */
+  z-index: 0;
+  pointer-events: none;
+}

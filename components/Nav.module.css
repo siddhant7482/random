@@ -1,0 +1,213 @@
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem var(--gutter);
+  padding-top: max(1rem, env(safe-area-inset-top));
+
+  /* Fully opaque, and no transition on anything. Deliberate:
+     a translucent bar (with or without backdrop-filter) shows the page
+     sliding underneath it, which reads as the header itself moving. */
+  background: var(--paper);
+  border-bottom: 1px solid var(--line);
+}
+
+/* ---------- monogram ---------- */
+
+.brand {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.3em;
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 1.1rem;
+  letter-spacing: 0.22em;
+  text-indent: 0.22em;
+  color: var(--ink);
+  z-index: 101;
+}
+
+.brand em {
+  font-family: var(--script);
+  font-style: normal;
+  font-size: 1.4rem;
+  color: var(--gold);
+  letter-spacing: 0;
+  text-indent: 0;
+}
+
+/* ---------- desktop links ---------- */
+
+.desktop ul {
+  display: flex;
+  align-items: center;
+  gap: clamp(1.25rem, 2.4vw, 2.4rem);
+}
+
+.desktop a {
+  position: relative;
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 0.8rem;
+  letter-spacing: 0.2em;
+  text-indent: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  padding-block: 0.4rem;
+  transition: color 0.35s var(--ease);
+}
+
+/* hairline that grows from the centre */
+.desktop a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.4s var(--ease);
+}
+
+.desktop a:hover,
+.desktop a:focus-visible {
+  color: var(--ink);
+}
+
+.desktop a:hover::after,
+.desktop a:focus-visible::after {
+  transform: scaleX(1);
+}
+
+.cta {
+  border: 1px solid var(--line-strong);
+  padding: 0.55rem 1.25rem !important;
+  color: var(--ink) !important;
+  transition: background-color 0.4s var(--ease), color 0.4s var(--ease),
+    border-color 0.4s var(--ease);
+}
+
+.cta::after {
+  display: none;
+}
+
+.cta:hover,
+.cta:focus-visible {
+  background: var(--ink);
+  color: var(--paper) !important;
+  border-color: var(--ink);
+}
+
+/* ---------- burger ---------- */
+
+.burger {
+  display: none;
+  position: relative;
+  z-index: 101;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.burger span {
+  position: absolute;
+  left: 11px;
+  width: 22px;
+  height: 1px;
+  background: var(--ink);
+  transition: transform 0.4s var(--ease), opacity 0.25s var(--ease);
+}
+
+.burger span:nth-child(1) {
+  top: 17px;
+}
+.burger span:nth-child(2) {
+  top: 22px;
+}
+.burger span:nth-child(3) {
+  top: 27px;
+}
+
+.burgerOpen span:nth-child(1) {
+  transform: translateY(5px) rotate(45deg);
+}
+.burgerOpen span:nth-child(2) {
+  opacity: 0;
+}
+.burgerOpen span:nth-child(3) {
+  transform: translateY(-5px) rotate(-45deg);
+}
+
+/* ---------- mobile sheet ---------- */
+
+.sheet {
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+  padding: 6rem var(--gutter) 3rem;
+  background: var(--paper);
+  /* animated via clip-path in JS */
+}
+
+.sheet ul {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(1rem, 3.5vh, 1.9rem);
+}
+
+.sheet a {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: clamp(1.6rem, 7vw, 2.4rem);
+  letter-spacing: 0.06em;
+  color: var(--ink);
+  transition: color 0.3s var(--ease);
+}
+
+.sheet a:active {
+  color: var(--gold);
+}
+
+.sheetMeta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  text-align: center;
+  color: var(--ink-2);
+}
+
+/* ---------- breakpoint ---------- */
+
+@media (max-width: 860px) {
+  .desktop {
+    display: none;
+  }
+
+  .burger {
+    display: block;
+  }
+}
+
+@media (min-width: 861px) {
+  .sheet {
+    display: none;
+  }
+}
