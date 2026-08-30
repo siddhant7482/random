@@ -53,19 +53,37 @@ the config and both the links and the mobile menu return on their own.
 
 ## Artwork
 
-There is no photograph on the page. The card is drawn in
-[`components/CardArt.tsx`](components/CardArt.tsx): the crown arc, the fleuron
-rules, the two-city scene, and the wreath.
+The hero is the card's illustration itself — `public/images/card.jpeg`,
+referenced from `hero.art` in `lib/config.ts`. It is **not** redrawn in code.
+An earlier version tried to reproduce the wreath and the two monuments as SVG
+paths and it was not remotely close; engraved illustration is not something
+hand-authored paths reach.
 
-The wreath is generated rather than listed out — `buildRing()` walks the circle
-placing roses at four anchors and filling between them with leaves, cosmos,
-sprigs and berries. It is deterministic, so the server and the browser draw the
-same wreath and nothing shifts on hydration. To make it fuller or sparser,
-change `STEP`; to move the roses, change `ROSE_AT`.
+Three things make it sit on the page rather than on top of it:
 
-`public/images/hero.jpg` is still there but is **not on the page** — it is only
-the image used for WhatsApp and iMessage link previews. The other files in that
-folder are unused.
+- **The palette is sampled from the artwork.** Its edge reads `#f9d2af` and its
+  centre `#fbd8ba`, so `--paper` is set to match. Change the artwork and you
+  should resample, or a square will appear around it.
+- **The edges are feathered** with a radial mask (`closest-side`), so the
+  corners fade out. Only the corners — the wreath is never touched.
+- **The bottom tenth is cropped off.** The file has the tagline baked in at the
+  bottom; on the card that line belongs *below* the names, so it is cut from
+  the image and set live in the right place.
+
+"SAVE THE DATE" is overlaid into the clear band under the artwork's own arc,
+positioned in `cqw` units so it scales with the illustration rather than the
+viewport and stays put at every width.
+
+Only two small pieces are still drawn, in `components/CardArt.tsx`: the rule
+under the names and the heart that closes the card.
+
+### Replacing the artwork
+
+Save over `public/images/card.jpeg` (or point `hero.art` elsewhere). If the
+file is missing the page falls back to a plain gold monogram on a hairline
+ring — deliberately minimal rather than a poor imitation. If your version has
+no baked-in tagline, drop the crop by setting `aspect-ratio: 1` on `.wrap` in
+`Medallion.module.css`.
 
 ---
 

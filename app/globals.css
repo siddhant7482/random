@@ -6,18 +6,20 @@
 
 :root {
   /* — parchment —
-     Aged paper rather than white: the card is printed on something with a
-     warm cast and a darker rim, which the vignette in `body` supplies. */
-  --paper: #f7e9d5;
-  --paper-2: #fcf3e4;
-  --paper-3: #efdcc0;
-  --paper-edge: #e4cda7;
+     Sampled straight off the artwork (its edge reads #f9d2af, its centre
+     #fbd8ba) so the illustration sits on the page with no visible square
+     around it. Warmer and far more saturated than it looks in isolation —
+     but the card is the reference, so the page matches the card. */
+  --paper: #f8d3b1;
+  --paper-2: #fce1c6;
+  --paper-3: #f2c69c;
+  --paper-edge: #e9b78c;
 
   /* — sepia ink —
      The lettering on the card is a warm brown, not black and not navy. */
-  --ink: #6a4a2c;
-  --ink-2: #86663f;
-  --ink-3: #a58a63;
+  --ink: #5e3f22;
+  --ink-2: #7a5a34;
+  --ink-3: #9c7c52;
 
   /* — accents — */
   --gold: #b8873f;

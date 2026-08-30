@@ -4,7 +4,8 @@ import { useRef } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { wedding } from "@/lib/config";
 import { useIntroDelay } from "@/lib/useIntroDelay";
-import { CityScene, Fleuron, HeartRule, TopArc, Wreath } from "./CardArt";
+import { Fleuron, HeartRule } from "./CardArt";
+import Medallion from "./Medallion";
 import s from "./Hero.module.css";
 
 const EASE = [0.22, 0.61, 0.36, 1] as const;
@@ -30,32 +31,13 @@ export default function Hero() {
   return (
     <section className={s.hero} ref={ref} id="hero">
       <motion.div className={s.inner} style={reduce ? undefined : { opacity: fade }}>
-        <motion.div className={s.arc} {...rise(0)}>
-          <TopArc />
-        </motion.div>
-
-        <motion.p className={`caps ${s.eyebrow}`} {...rise(1)}>
-          {wedding.hero.eyebrow}
-        </motion.p>
-
-        {/* The medallion: wreath, monogram and the two cities, stacked. It
-            scales as one unit so the ornament never drifts off the art. */}
         <motion.div
           className={s.medallion}
-          initial={reduce ? false : { opacity: 0, scale: 0.94 }}
+          initial={reduce ? false : { opacity: 0, scale: 0.96 }}
           animate={ready ? { opacity: 1, scale: 1 } : undefined}
           transition={{ duration: 1.5, delay: base + 0.2, ease: EASE }}
         >
-          <Wreath className={s.wreath} />
-
-          <div className={s.medallionInner}>
-            <p className={s.monogram} aria-label={`${wedding.bride[0]} and ${wedding.groom[0]}`}>
-              <span>{wedding.bride[0]}</span>
-              <span className={s.monogramR}>{wedding.groom[0]}</span>
-            </p>
-
-            <CityScene className={s.scene} />
-          </div>
+          <Medallion />
         </motion.div>
 
         <motion.h1 className={s.names} {...rise(4)}>

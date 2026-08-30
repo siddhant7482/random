@@ -1,0 +1,89 @@
+/* The artwork already contains its own crown arc at the top and the tagline
+   at the bottom. The arc we keep — it is better than anything drawn here. The
+   tagline is cropped off and set live instead, because baked into the image
+   it would sit above the names, and on the card it belongs below them. */
+
+.wrap {
+  position: relative;
+  /* 1 / 0.9: the bottom tenth is the rule, fleuron and tagline. */
+  aspect-ratio: 1 / 0.9;
+  width: 100%;
+  overflow: hidden;
+  /* container units let the overlaid caps scale with the artwork rather than
+     with the viewport, so they stay put inside the arc at every size */
+  container-type: inline-size;
+}
+
+.art {
+  object-fit: cover;
+  /* the image is full width and only the bottom is cut, so anchor to the top */
+  object-position: center top;
+  /* Feather the square edge into the page. `closest-side` puts 100% at the
+     edge midpoints, so only the corners — which are empty parchment — fade
+     completely, and the wreath is never touched. */
+  -webkit-mask-image: radial-gradient(circle closest-side, #000 84%, transparent 100%);
+  mask-image: radial-gradient(circle closest-side, #000 84%, transparent 100%);
+}
+
+/* "SAVE THE DATE", sitting in the open space beneath the arc's fleuron —
+   where it sits on the printed card. */
+.eyebrow {
+  position: absolute;
+  /* above the fill image, which is itself absolutely positioned and comes
+     later in the DOM */
+  z-index: 2;
+  /* 11%, not 15.5%: lower down it landed on the wreath's blossoms and became
+     unreadable. This is the clear band of parchment under the arc. */
+  top: 11.6%;
+  left: 0;
+  right: 0;
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 500;
+  /* narrow enough that the ends clear the arc where it curves down */
+  font-size: 2.4cqw;
+  letter-spacing: 0.44em;
+  text-indent: 0.44em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--ink);
+}
+
+/* ---------- fallback, when the artwork file isn't there ---------- */
+
+.fallback {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 0.9;
+  display: grid;
+  place-items: center;
+  container-type: inline-size;
+}
+
+.ring {
+  position: absolute;
+  inset: 6% 20%;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 6px var(--paper), inset 0 0 0 7px rgba(184, 135, 63, 0.35);
+}
+
+.monogram {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: clamp(4rem, 15vw, 7.5rem);
+  line-height: 0.86;
+  letter-spacing: -0.06em;
+  background-image: linear-gradient(145deg, var(--gold-2) 0%, var(--gold) 42%, var(--gold-3) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.monogramR {
+  margin-left: -0.16em;
+  transform: translateY(0.16em);
+}

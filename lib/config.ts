@@ -36,8 +36,16 @@ export const wedding = {
   hero: {
     eyebrow: "Save the date",
     tagline: "Two cities. One journey. A lifetime of togetherness and love.",
-    /* The two places the illustration pairs, left to right. */
-    cities: ["Chandigarh", "Panchkula"],
+
+    /* The illustrated medallion from the card — the wreath, the AR monogram,
+       and Chandigarh's Open Hand beside the Panchkula palace. Save the
+       artwork here as a square PNG; if the file is missing the page falls
+       back to a plain gold monogram. */
+    art: "/images/card.jpeg",
+    artAlt:
+      "An engraved floral wreath around the letters A and R, with Chandigarh's Open Hand monument and a domed palace",
+
+    /* Not shown on the page — only the WhatsApp / iMessage link preview. */
     photo: "/images/hero.jpg",
     photoAlt: "Ayushi and Romil",
   },
