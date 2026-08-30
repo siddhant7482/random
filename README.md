@@ -22,9 +22,9 @@ build), `npm run lint`.
 
 ## Changing the content
 
-**`lib/config.ts` is the only file you need.** Names, the date, venues, the
-schedule, the details cards, the gallery list and the FAQ all live there in
-plain English. Nothing in it requires knowing React.
+**`lib/config.ts` is the only file you need.** The names, the date, the place,
+the hero wording and the RSVP deadline all live there in plain English. Nothing
+in it requires knowing React.
 
 The one field to get right is the date:
 
@@ -32,33 +32,36 @@ The one field to get right is the date:
 dateISO: "2026-12-10T17:00:00",   // YYYY-MM-DDTHH:MM:SS, 24-hour, local time
 ```
 
-It drives the countdown, the page title, and the "Thursday, 10th December"
-heading on The Day. `dateLong` and `dateShort` are what guests actually read, so
-keep those in step with it.
+It drives the countdown and the page title. `dateLong` and `dateShort` are what
+guests actually read, so keep those in step with it.
 
-Text fields in the details cards accept a little formatting: `**bold**`,
-`_italic_`, and `\n` for a line break. That's the whole vocabulary.
+### What's on the page
 
-> **The story, schedule, venues and FAQ answers are placeholder wording.** They
-> are written to be plausible for a December wedding in Chandigarh so the site
-> reads properly — but the hotel names, timings and anecdotes are invented.
-> Go through `lib/config.ts` and replace them with the real details.
+Three sections: the hero, the countdown, and the RSVP form — plus a slim nav
+and a footer.
+
+Earlier versions also had Our Story, The Day, Details, a Gallery and an FAQ.
+Those were removed. If you want any of them back, they're in the git history:
+`git log --oneline` and look before the "Trim the site" commit.
+
+Because there is nowhere left to jump to, the nav carries only the monogram and
+the RSVP button, and the mobile hamburger is gone. Add entries to `navLinks` in
+the config and both the links and the mobile menu return on their own.
 
 ---
 
 ## Photos
 
-`public/images/` holds four photos, used across the hero, Our Story and the
-gallery. Save a new file over an existing name and it appears — no code change
-needed. Full details, including how to fix a bad crop, are in
-[`public/images/README.md`](public/images/README.md).
+The page uses one photo: `public/images/hero.jpg`. Save a new file over that
+name and it appears — no code change needed. Details, including how to fix a
+bad crop, are in [`public/images/README.md`](public/images/README.md).
 
-The hero photo should be **square**, and keep faces away from the edges: the
-torn edge eats roughly the outer 8%.
+It should be **square**, and keep faces away from the edges: the torn
+watercolour edge eats roughly the outer 8%.
 
-If you need filler for empty slots, `npm run placeholders` generates abstract
-watercolour washes in the site palette — read the warning in the photos README
-first, as it writes over `.png` files of the standard slot names.
+The other files in that folder belonged to the removed sections. They are
+unreferenced and safe to delete; they're kept only in case those sections
+come back.
 
 ---
 
@@ -197,7 +200,7 @@ Everything is built to degrade rather than break:
   portrait, a pool of light under the countdown, and warm bloom on the detail
   cards on hover.
 - **The opening curtain** plays once per browser tab, remembered in
-  `sessionStorage`. Guests checking the schedule for the fourth time skip it.
+  `sessionStorage`. Guests coming back for a fourth look skip it.
 - **Scroll reveals** use IntersectionObserver via Motion's `whileInView`, fire
   once, and never re-run.
 - **The line-drawn florals** work by animating `stroke-dashoffset` on paths that

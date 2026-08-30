@@ -38,6 +38,12 @@ export default function Nav() {
 
   const initials = `${wedding.bride[0]}${wedding.groom[0]}`;
 
+  /* With no section links there is nothing to put in a menu, so the burger
+     and the sheet are dropped and the RSVP button shows at every width — a
+     hamburger hiding a single item is worse than no hamburger. Restore
+     `navLinks` in the config and both come back. */
+  const hasLinks = navLinks.length > 0;
+
   return (
     <>
       <header className={s.nav}>
@@ -47,7 +53,7 @@ export default function Nav() {
           <span>{initials[1]}</span>
         </a>
 
-        <nav className={s.desktop} aria-label="Main">
+        <nav className={`${s.desktop} ${hasLinks ? "" : s.alwaysOn}`} aria-label="Main">
           <ul>
             {navLinks.map((l) => (
               <li key={l.href}>
@@ -62,19 +68,21 @@ export default function Nav() {
           </ul>
         </nav>
 
-        <button
-          ref={toggleRef}
-          type="button"
-          className={`${s.burger} ${open ? s.burgerOpen : ""}`}
-          aria-expanded={open}
-          aria-controls="mobile-menu"
-          aria-label={open ? "Close menu" : "Open menu"}
-          onClick={() => setOpen((v) => !v)}
-        >
-          <span />
-          <span />
-          <span />
-        </button>
+        {hasLinks && (
+          <button
+            ref={toggleRef}
+            type="button"
+            className={`${s.burger} ${open ? s.burgerOpen : ""}`}
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+            aria-label={open ? "Close menu" : "Open menu"}
+            onClick={() => setOpen((v) => !v)}
+          >
+            <span />
+            <span />
+            <span />
+          </button>
+        )}
       </header>
 
       <AnimatePresence>

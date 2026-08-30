@@ -211,3 +211,10 @@
     display: none;
   }
 }
+
+/* Shown at every width when there are no section links: without this the
+   RSVP button would vanish below 860px along with the rest of the desktop
+   nav, and there is no burger left to reveal it. */
+.desktop.alwaysOn {
+  display: block;
+}
