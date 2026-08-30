@@ -74,8 +74,14 @@ Three things make it sit on the page rather than on top of it:
 positioned in `cqw` units so it scales with the illustration rather than the
 viewport and stays put at every width.
 
-Only two small pieces are still drawn, in `components/CardArt.tsx`: the rule
-under the names and the heart that closes the card.
+Three small pieces are still drawn, in `components/CardArt.tsx`: the rule
+under the names, the heart that closes the card, and `Foothills`.
+
+`Foothills` is the Shivalik ridge Panchkula sits against, laid faintly across
+the foot of the page. It is a sense of place without a word of text — and it
+echoes the artwork, which has the same hills standing behind the Open Hand.
+Full-bleed rather than inside the content column: a horizon that stopped at a
+max-width would read as a picture of hills instead of as the horizon.
 
 ### The card responds to the pointer
 

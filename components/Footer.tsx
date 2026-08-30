@@ -1,4 +1,5 @@
 import { wedding } from "@/lib/config";
+import { Foothills } from "./CardArt";
 import { GarlandFloral } from "./Florals";
 import Reveal from "./Reveal";
 import s from "./Footer.module.css";
@@ -6,6 +7,8 @@ import s from "./Footer.module.css";
 export default function Footer() {
   return (
     <footer className={s.footer}>
+      <Foothills className={s.hills} />
+
       <Reveal className={s.garland} amount={0.4}>
         <GarlandFloral />
       </Reveal>

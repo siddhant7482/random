@@ -50,3 +50,60 @@ export function HeartRule(props: Svg) {
     </svg>
   );
 }
+
+/* ============================================================
+   FOOTHILLS
+   ============================================================ */
+
+/**
+ * The Shivalik ridge Panchkula sits against, as engraved line art.
+ *
+ * A wordless sense of place: the same hills already stand behind the Open
+ * Hand in the card's own illustration, so this echoes the artwork rather than
+ * introducing a new motif. Deliberately very faint and completely still — it
+ * is a horizon for the page to rest on, not something to look at.
+ *
+ * `preserveAspectRatio="none"` on purpose: the ridge stretches to whatever
+ * width the page is, which is what a distant horizon does anyway, and it
+ * means no awkward letterboxing on a wide screen.
+ */
+export function Foothills(props: Svg) {
+  return (
+    <svg
+      viewBox="0 0 1200 180"
+      preserveAspectRatio="none"
+      fill="none"
+      aria-hidden="true"
+      {...props}
+    >
+      {/* furthest ridge, palest */}
+      <path
+        d="M0,150 L0,104 C86,66 150,52 214,66 C286,82 330,116 402,110 C470,104 512,66 588,58
+           C664,50 706,84 782,92 C858,100 912,72 986,60 C1062,48 1130,66 1200,96 L1200,150 Z"
+        fill="currentColor"
+        opacity="0.10"
+      />
+      {/* middle ridge */}
+      <path
+        d="M0,152 L0,124 C74,102 138,92 206,102 C282,113 336,138 404,132 C472,126 520,100 596,96
+           C672,92 722,116 796,122 C870,128 928,110 1000,102 C1072,94 1138,108 1200,128 L1200,152 Z"
+        fill="currentColor"
+        opacity="0.14"
+      />
+      {/* nearest ridge, with a drawn crest so it reads as engraved */}
+      <path
+        d="M0,156 L0,142 C80,130 146,126 216,134 C296,143 348,158 420,154 C492,150 540,134 614,132
+           C688,130 740,148 812,152 C884,156 940,146 1010,140 C1080,134 1140,142 1200,154 L1200,156 Z"
+        fill="currentColor"
+        opacity="0.2"
+      />
+      <path
+        d="M0,142 C80,130 146,126 216,134 C296,143 348,158 420,154 C492,150 540,134 614,132
+           C688,130 740,148 812,152 C884,156 940,146 1010,140 C1080,134 1140,142 1200,154"
+        stroke="currentColor"
+        strokeWidth="0.9"
+        opacity="0.3"
+      />
+    </svg>
+  );
+}

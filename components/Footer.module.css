@@ -2,7 +2,7 @@
   position: relative;
   z-index: 1;
   padding: clamp(3rem, 8vw, 5rem) var(--gutter) clamp(2.5rem, 6vw, 4rem);
-  padding-bottom: max(clamp(2.5rem, 6vw, 4rem), env(safe-area-inset-bottom));
+  padding-bottom: max(clamp(3rem, 8vw, 6.5rem), env(safe-area-inset-bottom));
   text-align: center;
   background: linear-gradient(180deg, transparent, var(--paper-3));
 }
@@ -71,4 +71,19 @@
 .contact a:focus-visible {
   color: var(--gold);
   border-bottom-color: var(--gold);
+}
+
+/* The Shivalik ridge, sitting behind everything at the foot of the page.
+   Full-bleed rather than inside the content column: a horizon that stopped
+   at a max-width would read as a picture of hills instead of as the horizon. */
+.hills {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  width: 100%;
+  height: clamp(72px, 9.5vw, 128px);
+  color: var(--ink-2);
+  pointer-events: none;
 }
