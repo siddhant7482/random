@@ -28,11 +28,13 @@ type Particle = {
   pulseSpeed: number;
 };
 
+/* Taken from the card's own flowers, so the drift reads as petals off the
+   wreath rather than confetti from a different palette. */
 const PETAL_COLORS = [
-  "233, 205, 197", // blush
-  "216, 188, 142", // gold
-  "170, 182, 158", // sage
-  "244, 236, 228", // ivory
+  "226, 163, 135", // rose, from the wreath's blossoms
+  "201, 146, 79", // gold, from the monogram
+  "150, 152, 106", // olive, from the leaves
+  "247, 214, 182", // pale parchment
 ];
 
 const SPRITE_SIZE = 64;
@@ -79,10 +81,10 @@ export default function Petals() {
       if (sctx) {
         const c = SPRITE_SIZE / 2;
         const g = sctx.createRadialGradient(c, c, 0, c, c, c);
-        g.addColorStop(0, "rgba(255, 244, 214, 0.95)");
-        g.addColorStop(0.28, "rgba(238, 214, 172, 0.42)");
-        g.addColorStop(0.6, "rgba(216, 188, 142, 0.12)");
-        g.addColorStop(1, "rgba(216, 188, 142, 0)");
+        g.addColorStop(0, "rgba(255, 246, 224, 0.95)");
+        g.addColorStop(0.28, "rgba(246, 214, 165, 0.45)");
+        g.addColorStop(0.6, "rgba(214, 168, 106, 0.14)");
+        g.addColorStop(1, "rgba(214, 168, 106, 0)");
         sctx.fillStyle = g;
         sctx.fillRect(0, 0, SPRITE_SIZE, SPRITE_SIZE);
       }

@@ -77,6 +77,24 @@ viewport and stays put at every width.
 Only two small pieces are still drawn, in `components/CardArt.tsx`: the rule
 under the names and the heart that closes the card.
 
+### The card responds to the pointer
+
+It tilts toward the cursor — no more than 5.5 degrees, because past about six
+it stops reading as paper — and carries a specular highlight that follows the
+pointer, so the gold behaves like foil catching the light. Both are sprung, so
+the card settles rather than snapping.
+
+This is for a real mouse only. The check is `(hover: hover) and (pointer: fine)`,
+run after mount rather than during render — the server cannot know the pointer
+type, and guessing would risk a hydration mismatch. On a touchscreen, and under
+`prefers-reduced-motion`, the card is a plain still image.
+
+Two details that matter if you change it: the perspective belongs on the parent
+(`.stage`), not on the tilting element, or every child gets its own vanishing
+point and the card shears instead of turning; and the highlight blends with
+`soft-light`, because `screen` blew the parchment out to white and the
+engraving lost its contrast.
+
 ### Replacing the artwork
 
 Save over `public/images/card.jpeg` (or point `hero.art` elsewhere). If the

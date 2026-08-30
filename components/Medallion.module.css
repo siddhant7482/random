@@ -3,8 +3,17 @@
    tagline is cropped off and set live instead, because baked into the image
    it would sit above the names, and on the card it belongs below them. */
 
+/* Perspective lives on the parent, not on the tilting element: applied to the
+   element itself, every child gets its own vanishing point and the card shears
+   instead of turning. */
+.stage {
+  perspective: 1100px;
+  width: 100%;
+}
+
 .wrap {
   position: relative;
+  transform-style: preserve-3d;
   /* 1 / 0.9: the bottom tenth is the rule, fleuron and tagline. */
   aspect-ratio: 1 / 0.9;
   width: 100%;
@@ -21,6 +30,19 @@
   /* Feather the square edge into the page. `closest-side` puts 100% at the
      edge midpoints, so only the corners — which are empty parchment — fade
      completely, and the wreath is never touched. */
+  -webkit-mask-image: radial-gradient(circle closest-side, #000 84%, transparent 100%);
+  mask-image: radial-gradient(circle closest-side, #000 84%, transparent 100%);
+}
+
+/* The specular highlight that follows the pointer. `soft-light` keeps it
+   within the artwork's own tones — `screen` blew the parchment out to white
+   and the engraving lost its contrast. */
+.sheen {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  mix-blend-mode: soft-light;
   -webkit-mask-image: radial-gradient(circle closest-side, #000 84%, transparent 100%);
   mask-image: radial-gradient(circle closest-side, #000 84%, transparent 100%);
 }
@@ -52,12 +74,14 @@
 /* ---------- fallback, when the artwork file isn't there ---------- */
 
 .fallback {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 1 / 0.9;
+  overflow: visible;
+}
+
+.fallbackInner {
+  position: absolute;
+  inset: 0;
   display: grid;
   place-items: center;
-  container-type: inline-size;
 }
 
 .ring {
