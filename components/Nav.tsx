@@ -47,10 +47,11 @@ export default function Nav() {
   return (
     <>
       <header className={s.nav}>
+        {/* The interlocking monogram from the card, rather than three
+            separate letters with an ampersand between them. */}
         <a className={s.brand} href="#top" onClick={() => setOpen(false)} aria-label="Back to top">
           <span>{initials[0]}</span>
-          <em>&amp;</em>
-          <span>{initials[1]}</span>
+          <span className={s.brandR}>{initials[1]}</span>
         </a>
 
         <nav className={`${s.desktop} ${hasLinks ? "" : s.alwaysOn}`} aria-label="Main">

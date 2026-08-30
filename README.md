@@ -103,6 +103,14 @@ static card unless somebody happens to drag across it, and the foil is the
 whole point. The two axes drift on unequal periods (6.5s and 9.1s) so the
 highlight wanders rather than retracing one line.
 
+**The petals scatter too.** Drifting petals are pushed out of the way by the
+cursor or a finger within 150px, with the force falling off to nothing at the
+edge of that radius so there is no boundary they visibly jump across. It is
+applied as a velocity rather than a position, so they drift on afterwards
+instead of snapping back. There are also more of them than there were — with
+only a couple of dozen on screen you could sweep the cursor about and hit
+nothing at all.
+
 Pointer type is read through `useMediaQuery` in `lib/hydration.ts`, which wraps
 `useSyncExternalStore`. Not a `setState` in an effect: the server has no
 `matchMedia`, and this is the only way to get a defined first render that

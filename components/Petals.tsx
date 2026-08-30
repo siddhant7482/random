@@ -39,6 +39,11 @@ const PETAL_COLORS = [
 
 const SPRITE_SIZE = 64;
 
+/** How close the pointer has to be, in CSS pixels, before petals move. */
+const PUSH_RADIUS = 150;
+/** Peak push speed, px per second, at the very centre of that radius. */
+const PUSH_STRENGTH = 420;
+
 /**
  * Petals and warm light motes drifting down the whole page.
  *
@@ -71,6 +76,11 @@ export default function Petals() {
     const particles: Particle[] = [];
 
     const rand = (a: number, b: number) => a + Math.random() * (b - a);
+
+    /* Where the cursor or finger is, in CSS pixels. Read every frame rather
+       than reacted to per event: pointermove fires far more often than we
+       draw, and doing the maths on each one is wasted work. */
+    const pointer = { x: -9999, y: -9999, live: false };
 
     /* One soft warm dot, drawn once and reused for every mote. */
     const sprite = document.createElement("canvas");
@@ -125,8 +135,12 @@ export default function Petals() {
       canvas.style.height = `${h}px`;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      // roughly one particle per 26,000 px² — then clamped for phones and 4K alike
-      const total = Math.round(Math.min(Math.max((w * h) / 26000, 12), w < 700 ? 26 : 54));
+      /* Denser than it was: with only a couple of dozen on screen you could
+         sweep the cursor about and hit nothing, and the interaction went
+         unnoticed. Still clamped hard, and still cheap — these are two
+         bezier curves and a blitted sprite each. */
+      // roughly one particle per 21,000 px² — then clamped for phones and 4K alike
+      const total = Math.round(Math.min(Math.max((w * h) / 21000, 16), w < 700 ? 34 : 72));
       const wantMotes = Math.round(total * 0.38);
       const wantPetals = total - wantMotes;
 
@@ -189,6 +203,26 @@ export default function Petals() {
       ctx.globalCompositeOperation = "source-over";
 
       for (const p of particles) {
+        /* Petals scatter out of the way. The push falls off to nothing at the
+           edge of the radius, so there is no hard boundary where they
+           suddenly jump, and it is applied as a velocity rather than a
+           position so they drift on afterwards instead of snapping back. */
+        if (pointer.live) {
+          const dx = p.x - pointer.x;
+          const dy = p.y - pointer.y;
+          const dist2 = dx * dx + dy * dy;
+
+          if (dist2 < PUSH_RADIUS * PUSH_RADIUS && dist2 > 1) {
+            const dist = Math.sqrt(dist2);
+            const falloff = 1 - dist / PUSH_RADIUS;
+            const push = falloff * falloff * PUSH_STRENGTH * dt;
+            p.x += (dx / dist) * push;
+            p.y += (dy / dist) * push;
+            // and a little tumble, so they turn as they are brushed aside
+            p.angle += falloff * 0.9 * dt * (dx > 0 ? 1 : -1);
+          }
+        }
+
         p.phase += p.swaySpeed * dt;
         p.angle += p.spin * dt;
         p.flip += p.flipSpeed * dt;
@@ -223,6 +257,16 @@ export default function Petals() {
       raf = 0;
     };
 
+    const onPointer = (e: PointerEvent) => {
+      pointer.x = e.clientX;
+      pointer.y = e.clientY;
+      pointer.live = true;
+    };
+    // a finger lifting leaves no cursor behind, so stop pushing from there
+    const onPointerGone = () => {
+      pointer.live = false;
+    };
+
     const onVisibility = () => (document.hidden ? stop() : start());
 
     let resizeTimer: number;
@@ -234,12 +278,20 @@ export default function Petals() {
     resize();
     start();
     window.addEventListener("resize", onResize);
+    window.addEventListener("pointermove", onPointer, { passive: true });
+    window.addEventListener("pointerdown", onPointer, { passive: true });
+    window.addEventListener("pointerup", onPointerGone, { passive: true });
+    window.addEventListener("pointercancel", onPointerGone, { passive: true });
     document.addEventListener("visibilitychange", onVisibility);
 
     return () => {
       stop();
       window.clearTimeout(resizeTimer);
       window.removeEventListener("resize", onResize);
+      window.removeEventListener("pointermove", onPointer);
+      window.removeEventListener("pointerdown", onPointer);
+      window.removeEventListener("pointerup", onPointerGone);
+      window.removeEventListener("pointercancel", onPointerGone);
       document.removeEventListener("visibilitychange", onVisibility);
     };
   }, [reduce]);
