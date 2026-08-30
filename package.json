@@ -10,9 +10,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "shapes": "node scripts/generate-shapes.mjs > components/masks.module.css",
-    "icons": "node scripts/generate-icons.mjs",
-    "placeholders": "node scripts/generate-placeholders.mjs"
+    "icons": "node scripts/generate-icons.mjs"
   },
   "dependencies": {
     "motion": "^13.0.0",

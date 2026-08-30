@@ -1,32 +1,40 @@
 /* ============================================================
-   Lorelei & Oliver — design system
+   Ayushi & Romil — design system
    Palette + type are the two knobs. Change them here and the
    whole site follows.
    ============================================================ */
 
 :root {
-  /* — paper — */
-  --paper: #fbf9f6;
-  --paper-2: #ffffff;
-  --paper-3: #f4f0ea;
+  /* — parchment —
+     Aged paper rather than white: the card is printed on something with a
+     warm cast and a darker rim, which the vignette in `body` supplies. */
+  --paper: #f7e9d5;
+  --paper-2: #fcf3e4;
+  --paper-3: #efdcc0;
+  --paper-edge: #e4cda7;
 
-  /* — ink (the navy from the card) — */
-  --ink: #17263c;
-  --ink-2: #33455f;
-  --ink-3: #6b7a90;
+  /* — sepia ink —
+     The lettering on the card is a warm brown, not black and not navy. */
+  --ink: #6a4a2c;
+  --ink-2: #86663f;
+  --ink-3: #a58a63;
 
   /* — accents — */
-  --gold: #b99458;
-  --gold-2: #d8bc8e;
-  --sage: #93a288;
-  --blush: #efdcd6;
+  --gold: #b8873f;
+  --gold-2: #d9b473;
+  --gold-3: #8c6427;
+  /* the names on the card sit between olive and bronze */
+  --olive: #756c33;
+  --rose: #dca387;
+  --rose-2: #eec4ad;
+  --sage: #93976a;
 
-  --line: rgba(23, 38, 60, 0.13);
-  --line-strong: rgba(23, 38, 60, 0.26);
+  --line: rgba(106, 74, 44, 0.22);
+  --line-strong: rgba(106, 74, 44, 0.42);
 
   /* — type — */
   --serif: var(--font-serif), "Cormorant Garamond", Garamond, "Times New Roman", serif;
-  --script: var(--font-script), "Pinyon Script", "Snell Roundhand", cursive;
+  --script: var(--font-script), "Great Vibes", "Snell Roundhand", cursive;
   --sans: var(--font-sans), "Jost", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
   /* — rhythm — */
@@ -86,10 +94,10 @@ body::before {
   z-index: 0;
   pointer-events: none;
   opacity: 0.55;
-  background-image: radial-gradient(circle at 18% 12%, rgba(216, 188, 142, 0.16), transparent 42%),
-    radial-gradient(circle at 84% 22%, rgba(239, 220, 214, 0.2), transparent 44%),
-    radial-gradient(circle at 72% 82%, rgba(147, 162, 136, 0.13), transparent 46%),
-    radial-gradient(circle at 26% 70%, rgba(216, 188, 142, 0.11), transparent 44%);
+  background-image: radial-gradient(circle at 18% 12%, rgba(220, 163, 135, 0.16), transparent 42%),
+    radial-gradient(circle at 84% 22%, rgba(217, 180, 115, 0.18), transparent 44%),
+    radial-gradient(circle at 72% 82%, rgba(147, 151, 106, 0.12), transparent 46%),
+    radial-gradient(circle at 26% 70%, rgba(184, 135, 63, 0.1), transparent 44%);
   /* transform-only animation, so it never triggers layout or paint */
   animation: ambient 26s var(--ease-soft) infinite alternate;
   will-change: transform, opacity;
@@ -153,7 +161,7 @@ ol {
 }
 
 ::selection {
-  background: var(--blush);
+  background: var(--rose-2);
   color: var(--ink);
 }
 
@@ -194,7 +202,7 @@ ol {
   color: var(--gold);
 }
 
-/* Calligraphic display, ink→gold like the names on the card.
+/* Calligraphic display, olive→bronze like the names on the card.
    Two stacked background layers, both clipped to the glyphs: a travelling
    gold glint on top, the fixed ink→gold gradient beneath. The glint is
    gold rather than white — white would wash the letters out to the same
@@ -209,7 +217,7 @@ ol {
       rgba(238, 214, 172, 0.95) 50%,
       rgba(232, 206, 160, 0) 60%
     ),
-    linear-gradient(105deg, var(--ink) 0%, #2e4260 46%, var(--gold) 100%);
+    linear-gradient(105deg, var(--olive) 0%, #6d6337 44%, var(--gold-3) 100%);
   background-size: 260% 100%, 100% 100%;
   background-position: 260% 0, 0 0;
   background-repeat: no-repeat;

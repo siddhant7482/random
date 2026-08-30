@@ -18,10 +18,10 @@ export const wedding = {
   /* — the date —
      ISO format: YYYY-MM-DDTHH:MM:SS  (24h, local time)
      This drives the countdown, the <title> and the schedule heading. */
-  dateISO: "2026-12-10T17:00:00",
-  dateLong: "Thursday, December 10, 2026",
-  dateShort: "10 · 12 · 2026",
-  place: "Chandigarh, Punjab",
+  dateISO: "2026-12-09T17:00:00",
+  dateLong: "Wednesday, December 9, 2026",
+  dateShort: "09 · 12 · 2026",
+  place: "Panchkula, Haryana",
 
   /* — RSVP —
      Replies post to this site's own /api/rsvp, which stores them and emails
@@ -30,14 +30,16 @@ export const wedding = {
   rsvpDeadline: "10 November 2026",
 
   /* — hero —
-     `focus` is CSS object-position. The photo is cropped to fill the torn
-     shape, so nudge this if faces drift out of frame. */
+     The card is drawn, not photographed: an engraved medallion of the two
+     cities inside a floral wreath. `photo` is no longer on the page — it is
+     kept only as the image for WhatsApp and iMessage link previews. */
   hero: {
     eyebrow: "Save the date",
-    accent: "we can't wait to celebrate with you",
+    tagline: "Two cities. One journey. A lifetime of togetherness and love.",
+    /* The two places the illustration pairs, left to right. */
+    cities: ["Chandigarh", "Panchkula"],
     photo: "/images/hero.jpg",
-    photoAlt: "Ayushi and Romil on the beach at sunset",
-    focus: "50% 45%",
+    photoAlt: "Ayushi and Romil",
   },
 } as const;
 

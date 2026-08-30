@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Cormorant_Garamond, Pinyon_Script, Jost } from "next/font/google";
+import { Cormorant_Garamond, Great_Vibes, Jost } from "next/font/google";
 import { wedding } from "@/lib/config";
 import "./globals.css";
 
@@ -16,7 +16,10 @@ const serif = Cormorant_Garamond({
   display: "swap",
 });
 
-const script = Pinyon_Script({
+/* Great Vibes rather than Pinyon Script: the card's names are a formal
+   calligraphic hand with heavy downstrokes, and Pinyon is a hairline face
+   that read as far too delicate beside the engraved wreath. */
+const script = Great_Vibes({
   subsets: ["latin"],
   weight: "400",
   variable: "--font-script",
@@ -50,7 +53,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#fbf9f6",
+  themeColor: "#f7e9d5",
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",

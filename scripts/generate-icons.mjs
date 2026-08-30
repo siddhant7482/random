@@ -9,7 +9,7 @@
  *   npm run icons
  *
  * It drives a real browser pointed at the running site, so the monogram is
- * drawn with the very same self-hosted Cormorant Garamond and Pinyon Script
+ * drawn with the very same self-hosted Cormorant Garamond and Great Vibes
  * the pages use. Hand-drawing the letterforms as SVG paths would drift from
  * the typography the moment either font changed.
  *
@@ -26,15 +26,17 @@ const CHROME =
   process.env.CHROME_PATH || "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
 const SITE = process.env.SITE_URL || "http://localhost:3000";
 
-const IVORY = "#fbf9f6";
-const GOLD = "#d8bc8e";
+const IVORY = "#f2dfbd";
+const GOLD = "#e0bd7c";
 
-/* Navy at 0.996 rather than a flat hex, and the reason is not cosmetic.
+/* Deep sepia at 0.996 rather than a flat hex, and the reason is not cosmetic.
    Chrome encodes a screenshot as RGB whenever every pixel is fully opaque,
    and a PNG embedded in an .ico must be RGBA or decoders reject the file
    outright. Shaving alpha to 254/255 forces the channel to exist. The colour
-   shift is under half a percent — invisible against any tab background. */
-const INK = "rgba(23, 38, 60, 0.996)";
+   shift is under half a percent — invisible against any tab background.
+   The field stays dark even though the card is parchment: a pale icon
+   disappears into a pale browser tab strip. */
+const INK = "rgba(84, 58, 32, 0.996)";
 
 /**
  * @param {number} size   rendered edge length in px
@@ -43,7 +45,7 @@ const INK = "rgba(23, 38, 60, 0.996)";
  *                        the mark inset so nothing is clipped
  */
 const markup = (size, bleed) => {
-  /* Below about 24px the Pinyon ampersand has too few pixels to be anything
+  /* Below about 24px the script ampersand has too few pixels to be anything
      but a smudge, so the small sizes carry the two initials alone and give
      them the extra room. The .ico holds each size separately, so this costs
      nothing. */
@@ -169,7 +171,7 @@ async function shot(size, bleed) {
   const el = await page.$("#icon");
 
   /* omitBackground makes Chrome encode RGBA rather than RGB. The icon itself
-     is still fully opaque — its own navy background paints over everything —
+     is still fully opaque — its own sepia background paints over everything —
      but the alpha channel has to be present: a PNG embedded in an .ico must
      be RGBA, and decoders reject it outright otherwise. */
   return Buffer.from(await el.screenshot({ encoding: "binary", omitBackground: true }));

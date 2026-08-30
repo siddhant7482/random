@@ -68,9 +68,9 @@ export default function Curtain() {
                   resolved with the element, so there's nothing to race. */}
               <defs>
                 <linearGradient id="curtainInk" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0%" stopColor="#17263c" />
-                  <stop offset="55%" stopColor="#2e4260" />
-                  <stop offset="100%" stopColor="#b99458" />
+                  <stop offset="0%" stopColor="#8c6427" />
+                  <stop offset="55%" stopColor="#b8873f" />
+                  <stop offset="100%" stopColor="#d9b473" />
                 </linearGradient>
               </defs>
               <motion.path

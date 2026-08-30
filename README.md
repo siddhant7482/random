@@ -1,8 +1,9 @@
 # Ayushi & Romil — wedding site
 
 An ivory-and-navy wedding site built to match the save-the-date card: wide-tracked
-serif capitals, gold calligraphy, photos torn out with a watercolour edge, and
-botanical line art that draws itself in as you scroll.
+serif capitals, gold calligraphy, and an engraved medallion — a floral wreath
+around the two cities the couple come from — all of it drawn in SVG rather
+than photographed.
 
 Next.js 16 (App Router) · React 19 · TypeScript · CSS Modules · Motion.
 
@@ -50,18 +51,21 @@ the config and both the links and the mobile menu return on their own.
 
 ---
 
-## Photos
+## Artwork
 
-The page uses one photo: `public/images/hero.jpg`. Save a new file over that
-name and it appears — no code change needed. Details, including how to fix a
-bad crop, are in [`public/images/README.md`](public/images/README.md).
+There is no photograph on the page. The card is drawn in
+[`components/CardArt.tsx`](components/CardArt.tsx): the crown arc, the fleuron
+rules, the two-city scene, and the wreath.
 
-It should be **square**, and keep faces away from the edges: the torn
-watercolour edge eats roughly the outer 8%.
+The wreath is generated rather than listed out — `buildRing()` walks the circle
+placing roses at four anchors and filling between them with leaves, cosmos,
+sprigs and berries. It is deterministic, so the server and the browser draw the
+same wreath and nothing shifts on hydration. To make it fuller or sparser,
+change `STEP`; to move the roses, change `ROSE_AT`.
 
-The other files in that folder belonged to the removed sections. They are
-unreferenced and safe to delete; they're kept only in case those sections
-come back.
+`public/images/hero.jpg` is still there but is **not on the page** — it is only
+the image used for WhatsApp and iMessage link previews. The other files in that
+folder are unused.
 
 ---
 
@@ -227,10 +231,9 @@ lib/
   rsvp-store.ts       Postgres in production, JSON file in dev
   mail.ts             Brevo / Resend over plain fetch, no dependency
   admin-auth.ts       password → signed cookie
-  shapes.ts           generated torn-edge paths (see below)
   rich.tsx            the tiny **bold** / _italic_ formatter
 scripts/
-  generate-shapes.mjs
+  generate-icons.mjs
 public/images/        your photos
 ```
 
@@ -238,16 +241,3 @@ public/images/        your photos
 exists so `/admin` can render as a plain tool without the petals, curtain and
 footer.
 
-### Regenerating the torn edges
-
-The watercolour edges in `lib/shapes.ts` are generated rather than hand-drawn —
-a deterministic noise function walked around a circle, so the same seed always
-produces the same tear. To get a different set, change the `seed` numbers in
-`scripts/generate-shapes.mjs` and run:
-
-```bash
-npm run shapes
-```
-
-That rewrites `lib/shapes.ts` in place. The knobs are `lobeAmt` (how much the
-overall silhouette wanders) and `tearAmt` (how ragged the edge fibres are).
