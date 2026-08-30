@@ -84,10 +84,24 @@ it stops reading as paper — and carries a specular highlight that follows the
 pointer, so the gold behaves like foil catching the light. Both are sprung, so
 the card settles rather than snapping.
 
-This is for a real mouse only. The check is `(hover: hover) and (pointer: fine)`,
-run after mount rather than during render — the server cannot know the pointer
-type, and guessing would risk a hydration mismatch. On a touchscreen, and under
-`prefers-reduced-motion`, the card is a plain still image.
+There are three modes, because most guests open this on a phone:
+
+| | |
+| --- | --- |
+| **mouse** | follows the cursor on hover |
+| **touch** | follows a finger, but only while one is down — a touchscreen has no hover, so there is nothing else to track |
+| **idle** | a slow highlight drifts across on its own |
+
+The idle drift is the one that matters. Without it a phone shows a completely
+static card unless somebody happens to drag across it, and the foil is the
+whole point. The two axes drift on unequal periods (6.5s and 9.1s) so the
+highlight wanders rather than retracing one line.
+
+Pointer type is read through `useMediaQuery` in `lib/hydration.ts`, which wraps
+`useSyncExternalStore`. Not a `setState` in an effect: the server has no
+`matchMedia`, and this is the only way to get a defined first render that
+agrees with the server markup. Under `prefers-reduced-motion` all of it is off
+and the card is a plain still image.
 
 Two details that matter if you change it: the perspective belongs on the parent
 (`.stage`), not on the tilting element, or every child gets its own vanishing
