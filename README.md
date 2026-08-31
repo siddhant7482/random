@@ -96,11 +96,19 @@ There are three modes, because most guests open this on a phone:
 | --- | --- |
 | **mouse** | follows the cursor on hover |
 | **motion** | on a handset, follows how the phone is being held — tip the device and the card tips with it |
+| **scroll** | on touch with no working sensor, the card tips as it travels up the viewport |
 | **touch** | follows a finger while one is down |
 | **idle** | a slow highlight drifts across on its own |
 
-Device motion is the one that matters on a phone, which is where most guests
-will open this — a cursor is the one thing they do not have. Two details:
+Device motion cannot be relied on, which is why the scroll path exists.
+Orientation is gated behind a **secure context** — `localhost` counts, a
+plain-http address on the local network does not, so it will look broken when
+tested over wifi and work once deployed. iOS additionally requires a
+permission the guest may decline, and some handsets emit nothing at all.
+Scroll always works, so a phone is never left with a card that ignores
+everything it is shown.
+
+When orientation is available, two details matter:
 "level" is anchored to however the handset is being held at the first reading,
 not to flat-on-a-table, or the card would sit pegged at full tilt permanently;
 and a tap re-anchors it, for when someone lies down. Android hands orientation

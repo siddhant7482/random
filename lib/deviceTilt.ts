@@ -22,6 +22,17 @@ export function orientationNeedsPermission(): boolean {
   return typeof (window.DeviceOrientationEvent as unknown as PermissionGate).requestPermission === "function";
 }
 
+/**
+ * Sensors are gated behind a secure context. `localhost` counts as one, a
+ * plain-http address on the local network does not — which is exactly how
+ * this gets tested, and why it can look broken on a phone and fine on the
+ * machine it was built on.
+ */
+export function orientationAvailable(): boolean {
+  if (typeof window === "undefined") return false;
+  return Boolean(window.isSecureContext && window.DeviceOrientationEvent);
+}
+
 /** iOS only ever grants this from inside a user gesture — call it from a tap. */
 export async function requestOrientationAccess(): Promise<boolean> {
   const gate = window.DeviceOrientationEvent as unknown as PermissionGate;
@@ -80,8 +91,15 @@ export function useDeviceTilt(active: boolean, onTilt: (t: Tilt) => void) {
       });
     };
 
+    /* Both event names. Plain `deviceorientation` is the common one, but some
+       Android builds only ever emit the absolute variant, and listening for
+       one and not the other is a silent no-op on those handsets. */
     window.addEventListener("deviceorientation", onOrient);
-    return () => window.removeEventListener("deviceorientation", onOrient);
+    window.addEventListener("deviceorientationabsolute", onOrient);
+    return () => {
+      window.removeEventListener("deviceorientation", onOrient);
+      window.removeEventListener("deviceorientationabsolute", onOrient);
+    };
   }, [active]);
 
   /** Re-anchor to however the phone is being held right now. */

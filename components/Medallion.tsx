@@ -14,6 +14,7 @@ import {
 import { wedding } from "@/lib/config";
 import { useIsHydrated, useMediaQuery } from "@/lib/hydration";
 import {
+  orientationAvailable,
   orientationNeedsPermission,
   requestOrientationAccess,
   useDeviceTilt,
@@ -29,16 +30,18 @@ import s from "./Medallion.module.css";
  * Four things can drive it:
  *
  *   mouse    follows the cursor on hover
- *   motion   on a handset, follows how the phone is being held — tip the
- *            device and the card tips with it
+ *   motion   on a handset, follows how the phone is being held
+ *   scroll   on touch without a working sensor, the card tips as it travels
+ *            up the viewport
  *   touch    follows a finger while one is down
- *   idle     failing all of those, a slow highlight drifts across on its own
+ *   idle     a slow highlight drifts across on its own
  *
- * Device motion is the one that matters, because a phone is where most guests
- * will open this and a cursor is the one thing they do not have. The idle
- * drift is the floor: sensors can be absent, refused, or simply never fire.
+ * The scroll path exists because device orientation is not dependable: it is
+ * gated behind a secure context, iOS additionally requires a permission the
+ * guest may decline, and some handsets emit nothing at all. Scroll always
+ * works, so a phone is never left with a card that ignores everything.
  *
- * All four feed the same two motion values, so there is a single spring, a
+ * They all feed the same two motion values, so there is a single spring, a
  * single tilt and a single highlight to keep in step.
  */
 
@@ -61,7 +64,7 @@ export default function Medallion() {
 
   /* Only ask the handset. A laptop with a lid sensor would otherwise report
      orientation and fight the cursor for control of the same card. */
-  const wantMotion = enabled && !fine;
+  const wantMotion = enabled && !fine && orientationAvailable();
   const needsPermission = hydrated && orientationNeedsPermission();
   const motionOk = wantMotion && (!needsPermission || granted);
 
@@ -96,9 +99,11 @@ export default function Medallion() {
     drift.current = [
       // unequal periods, so the highlight wanders rather than tracing one line
       animate(px, [0.22, 0.78], { duration: 6.5, ...common }),
-      animate(py, [0.34, 0.62], { duration: 9.1, ...common }),
+      /* On a pointer device the drift owns both axes. On touch it only
+         sweeps across, because scroll owns the vertical one. */
+      ...(fine ? [animate(py, [0.34, 0.62], { duration: 9.1, ...common })] : []),
     ];
-  }, [px, py, stopDrift]);
+  }, [px, py, stopDrift, fine]);
 
   const { live: sensorLive, recentre } = useDeviceTilt(motionOk, (t) => {
     stopDrift();
@@ -115,6 +120,35 @@ export default function Medallion() {
       window.clearTimeout(idleTimer.current);
     };
   }, [enabled, sensorLive, startDrift, stopDrift]);
+
+  /* Scrolling tips the card too, on touch devices with no working sensor.
+     Orientation is gated behind a secure context and, on iOS, a permission
+     the guest may simply decline — without this, those phones get a card
+     that never responds to anything they do. Scroll always works. */
+  useEffect(() => {
+    if (!enabled || fine || sensorLive) return;
+
+    let frame = 0;
+    const onScroll = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        const el = ref.current;
+        if (!el) return;
+        const r = el.getBoundingClientRect();
+        // where the card sits in the viewport, 0 at the bottom edge, 1 at the top
+        const through = 1 - (r.top + r.height / 2) / window.innerHeight;
+        py.set(Math.min(Math.max(0.5 + (through - 0.5) * 0.9, 0), 1));
+      });
+    };
+
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(frame);
+    };
+  }, [enabled, fine, sensorLive, py]);
 
   /* Android hands orientation over without asking; iOS demands a gesture. So
      on iOS the first tap anywhere doubles as the prompt — no banner, no

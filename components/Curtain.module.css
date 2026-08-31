@@ -15,10 +15,38 @@
   gap: 0.5rem;
 }
 
-.mono {
-  width: clamp(140px, 34vw, 210px);
-  height: auto;
-  overflow: visible;
+.monogram {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: clamp(3.5rem, 13vw, 5.5rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+/* The gradient is clipped per letter, not across the pair: the R carries a
+   transform, and a transformed child is lifted out of its parent's
+   background-clip and would paint as transparent text over nothing. */
+.monogram span {
+  background-image: linear-gradient(145deg, var(--gold-2) 0%, var(--gold) 42%, var(--gold-3) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.monogramR {
+  margin-left: -0.14em;
+  transform: translateY(0.14em);
+}
+
+.rule {
+  display: block;
+  width: min(46vw, 12rem);
+  height: 1px;
+  margin: clamp(1rem, 3vw, 1.75rem) 0 clamp(0.9rem, 2.5vw, 1.4rem);
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
 }
 
 .label {

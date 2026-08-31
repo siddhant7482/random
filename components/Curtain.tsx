@@ -62,46 +62,34 @@ export default function Curtain() {
           transition={{ duration: 1.1, ease: [0.76, 0, 0.24, 1] }}
         >
           <div className={s.inner}>
-            <motion.svg viewBox="0 0 200 110" className={s.mono} initial="hidden" animate="shown">
-              {/* Defined inside this same SVG rather than in a shared defs
-                  block elsewhere in the document — an internal reference is
-                  resolved with the element, so there's nothing to race. */}
-              <defs>
-                <linearGradient id="curtainInk" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0%" stopColor="#8c6427" />
-                  <stop offset="55%" stopColor="#b8873f" />
-                  <stop offset="100%" stopColor="#d9b473" />
-                </linearGradient>
-              </defs>
-              <motion.path
-                d="M18,70 C40,38 66,34 80,56 C92,74 74,94 60,84 C46,74 58,48 84,42 C110,36 126,52 132,64"
-                fill="none"
-                stroke="url(#curtainInk)"
-                strokeWidth="1.2"
-                strokeLinecap="round"
-                pathLength={1}
-                variants={{ hidden: { pathLength: 0 }, shown: { pathLength: 1 } }}
-                transition={{ duration: 1.1, ease: "easeInOut" }}
-              />
-              <motion.path
-                d="M132,64 C140,48 158,40 172,48 C186,56 184,78 168,82 C154,86 142,76 140,64"
-                fill="none"
-                stroke="url(#curtainInk)"
-                strokeWidth="1.2"
-                strokeLinecap="round"
-                pathLength={1}
-                variants={{ hidden: { pathLength: 0 }, shown: { pathLength: 1 } }}
-                transition={{ duration: 0.85, delay: 0.5, ease: "easeInOut" }}
-              />
-            </motion.svg>
+            {/* The same interlocking monogram as the header and the card,
+                rather than the hand-drawn flourish that used to be here —
+                the mark is settled now, so the loader should use it. */}
+            <motion.p
+              className={s.monogram}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1, ease: [0.22, 0.61, 0.36, 1] }}
+            >
+              <span>{wedding.bride[0]}</span>
+              <span className={s.monogramR}>{wedding.groom[0]}</span>
+            </motion.p>
+
+            {/* a hairline that draws itself out from the centre */}
+            <motion.span
+              className={s.rule}
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ duration: 1.1, delay: 0.35, ease: [0.22, 0.61, 0.36, 1] }}
+            />
 
             <motion.span
               className={s.label}
               initial={{ opacity: 0, letterSpacing: "0.9em" }}
-              animate={{ opacity: 1, letterSpacing: "0.42em" }}
+              animate={{ opacity: 1, letterSpacing: "0.44em" }}
               transition={{ duration: 1.2, delay: 0.55, ease: [0.22, 0.61, 0.36, 1] }}
             >
-              {wedding.bride[0]} &amp; {wedding.groom[0]}
+              {wedding.dateShort}
             </motion.span>
           </div>
         </motion.div>
