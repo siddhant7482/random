@@ -95,13 +95,21 @@ There are three modes, because most guests open this on a phone:
 | | |
 | --- | --- |
 | **mouse** | follows the cursor on hover |
-| **touch** | follows a finger, but only while one is down — a touchscreen has no hover, so there is nothing else to track |
+| **motion** | on a handset, follows how the phone is being held — tip the device and the card tips with it |
+| **touch** | follows a finger while one is down |
 | **idle** | a slow highlight drifts across on its own |
 
-The idle drift is the one that matters. Without it a phone shows a completely
-static card unless somebody happens to drag across it, and the foil is the
-whole point. The two axes drift on unequal periods (6.5s and 9.1s) so the
-highlight wanders rather than retracing one line.
+Device motion is the one that matters on a phone, which is where most guests
+will open this — a cursor is the one thing they do not have. Two details:
+"level" is anchored to however the handset is being held at the first reading,
+not to flat-on-a-table, or the card would sit pegged at full tilt permanently;
+and a tap re-anchors it, for when someone lies down. Android hands orientation
+over freely, iOS demands a gesture, so on iOS the first tap doubles as the
+prompt — no banner, no button, and a refusal changes nothing.
+
+The idle drift is the floor beneath all of it, for absent sensors, refused
+permission, or a desktop. Its two axes drift on unequal periods (6.5s and
+9.1s) so the highlight wanders rather than retracing one line.
 
 **The petals scatter too.** Drifting petals are pushed out of the way by the
 cursor or a finger within 150px, with the force falling off to nothing at the

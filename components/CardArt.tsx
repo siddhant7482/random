@@ -17,10 +17,15 @@ type Svg = React.SVGProps<SVGSVGElement>;
    FLEURONS
    ============================================================ */
 
-/** Small divider: a lozenge between two hairlines, as under the names. */
-export function Fleuron({ width = 200, ...props }: { width?: number } & Svg) {
+/** Small divider: a lozenge between two hairlines, as under the names.
+ *
+ * No width attribute on purpose. It used to default to 200px, which sat
+ * left-aligned inside its wider container and threw the lozenge visibly off
+ * the centre of the names above it. Without one the SVG fills its box, and
+ * the box is already centred. */
+export function Fleuron(props: Svg) {
   return (
-    <svg viewBox="0 0 200 16" width={width} fill="none" aria-hidden="true" {...props}>
+    <svg viewBox="0 0 200 16" fill="none" aria-hidden="true" {...props}>
       <g stroke="currentColor" strokeWidth="0.9" strokeLinecap="round" opacity="0.75">
         <path d="M6,8 H78" />
         <path d="M122,8 H194" />
